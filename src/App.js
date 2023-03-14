@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 const toLocaleString = (num) =>
   String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
 
-  const removeSpaces = (num) => num.toString().replace(/\s/g, "")
+const removeSpaces = (num) => num.toString().replace(/\s/g, "")
 
 const buttonValues = [
   ["C", "+-", "%", "/"],
@@ -17,109 +17,139 @@ const buttonValues = [
 ];
 const App = () => {
 
-  var calc = {
+  let [calc, setcalc] = useState({
     sign: "",
     num: 0,
     res: 0,
-   };
-  
-    const numClickHandler = (e) => {
-      const value = e;
-      console.log(e);
-      if (calc.num.length < 16) {
-          calc.num = calc.num === 0 && value === "0"
-              ? "0"
-              : calc.num % 1 === 0
-              ? Number(calc.num + value)
-              : calc.num + value;
-          calc.res = !calc.sign ? 0 : calc.res;
-        }
-    };
-  
-  
-    const commaClickHandler = (e) => {
-      const value = e;
-      calc.num= !calc.num.toString().includes(".") ? calc.num + value : calc.num;
-    };
-  
-    const signClickHandler = (e) => {
-      const value = e;
-      console.log(value)
-        calc.sign = value;
-        calc.res = !calc.res && calc.num ? calc.num : calc.res;
-        calc.num = 0;
-    };
-    
-  
-    const equalsClickHandler = () => {
-      if (calc.sign && calc.num) {
-        const math = (a, b, sign) =>
-          calc.sign === "+"
-            ? a + b
-            : calc.sign === "-"
+  });
+
+  const numClickHandler = (e) => {
+    const value = e;
+    console.log(e);
+
+    if (removeSpaces(calc.num).length < 16) {
+      setcalc({
+        num:
+          calc.num === 0 && value === "0"
+            ? "0"
+            : removeSpaces(calc.num) % 1 === 0
+              ? toLocaleString(Number(removeSpaces(calc.num + value)))
+              : toLocaleString(calc.num + value),
+        res: !calc.sign ? 0 : calc.res,
+      });
+    }
+  };
+
+
+  const commaClickHandler = (e) => {
+    const value = e;
+
+    setcalc({
+      ...calc,
+      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
+    });
+  };
+
+  const signClickHandler = (e) => {
+    const value = e;
+    console.log(value)
+
+    setcalc({
+      num: 0,
+      sign: value,
+      res: !calc.res && calc.num ? calc.num : calc.res,
+
+    });
+  };
+
+
+  const equalsClickHandler = () => {
+    if (calc.sign && calc.num) {
+      const math = (a, b, sign) =>
+        sign === "+"
+          ? a + b
+          : calc.sign === "-"
             ? a - b
             : calc.sign === "X"
-            ? a * b
-            : a / b;
-        calc.res =
-            calc.num === "0" && calc.sign === "/"
-              ? "Can't divide with 0"
-              : math(Number(calc.res), Number(calc.num), calc.sign);
-        calc.sign= "";
-        calc.num= 0;
-      }
-    };
-  
-    // equalsClickHandler function
-  
+              ? a * b
+              : a / b;
+
+      setcalc({
+        res:
+          calc.num === "0" && calc.sign === "/"
+            ? "Can't divide with 0"
+            : toLocaleString(
+              math(
+                Number(removeSpaces(calc.res)),
+                Number(removeSpaces(calc.num)),
+                calc.sign
+              )
+            ),
+        sign: "",
+        num: 0,
+      });
+
+    }
+  };
+
+  // equalsClickHandler function
+
   const invertClickHandler = () => {
-        calc.num = calc.num ? calc.num * -1 : 0;
-        calc.res = calc.res ? calc.res * -1 : 0;
-        calc.sign = "";
-      };
-  
-    // invertClickHandler function
-  
+    setcalc({
+      num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
+      res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
+      sign: "",
+    });
+  };
+
+  // invertClickHandler function
+
   const percentClickHandler = () => {
-      let num = calc.num ? parseFloat(calc.num) : 0;
-      let res = calc.res ? parseFloat(calc.res) : 0;
-        calc.num = (num /= Math.pow(100, 1));
-        calc.res = (res /= Math.pow(100, 1));
-        calc.sign= "";
-    };
-  
-    // percentClickHandler function
-  
+    let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
+    let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
+
+    setcalc({
+      num: (num /= Math.pow(100, 1)),
+      res: (res /= Math.pow(100, 1)),
+      sign: "",
+    });
+  };
+
+  // percentClickHandler function
+
   const resetClickHandler = () => {
-        calc.sign = "";
-        calc.num = 0;
-        calc.res = 0;
-    };
+
+    setcalc({
+      sign: "",
+      num: 0,
+      res: 0,
+    });
+  };
 
 
   return (
     <Border>
-      <Screen value = {calc.num ? calc.num : calc.res} />
-        {
-          buttonValues.map((btn, i) => {
-            return (
-              <>
-                <ButtonKey
-                  key={i}
-                  className={null}
-                  value={btn}
-                  resetClickHandler = {resetClickHandler}
-                  invertClickHandler = {invertClickHandler}
-                  percentClickHandler = {percentClickHandler}
-                  equalsClickHandler = {equalsClickHandler}
-                  signClickHandler = {signClickHandler}
-                  commaClickHandler = {commaClickHandler}
-                  numClickHandler = {numClickHandler}
-                />
-              </>
-              );
-          })
-        }
+      <Screen value={calc.num ? calc.num : calc.res} />
+      {
+        buttonValues.map((btn, i) => {
+          return (
+            <>
+              <ButtonKey
+                key={i}
+                className={null}
+                value={btn}
+                resetClickHandler={resetClickHandler}
+                invertClickHandler={invertClickHandler}
+                percentClickHandler={percentClickHandler}
+                equalsClickHandler={equalsClickHandler}
+                signClickHandler={signClickHandler}
+                commaClickHandler={commaClickHandler}
+                numClickHandler={numClickHandler}
+              />
+            </>
+          );
+        })
+      }
     </Border>
   );
 };
