@@ -15,6 +15,10 @@ const buttonValues = [
   [1, 2, 3, "+"],
   [0, ".", "="],
 ];
+
+const math = (a, b, sign) =>
+  sign === "+" ? a + b : sign === "-" ? a - b : sign === "X" ? a * b : a / b;
+
 const App = () => {
 
   let [calc, setcalc] = useState({
@@ -55,25 +59,24 @@ const App = () => {
     console.log(value)
 
     setcalc({
-      num: 0,
+      
       sign: value,
-      res: !calc.res && calc.num ? calc.num : calc.res,
+      res: !calc.num ? calc.res : !calc.res ? calc.num : toLocaleString(
+        math(
+          Number(removeSpaces(calc.res)),
+          Number(removeSpaces(calc.num)),
+          calc.sign
+        )
+      ),
+      num: 0,
 
     });
   };
 
 
   const equalsClickHandler = () => {
+    console.log("Hi")
     if (calc.sign && calc.num) {
-      const math = (a, b, sign) =>
-        sign === "+"
-          ? a + b
-          : calc.sign === "-"
-            ? a - b
-            : calc.sign === "X"
-              ? a * b
-              : a / b;
-
       setcalc({
         res:
           calc.num === "0" && calc.sign === "/"
@@ -88,8 +91,8 @@ const App = () => {
         sign: "",
         num: 0,
       });
-
     }
+    console.log(calc.sign && calc.num);
   };
 
   // equalsClickHandler function
