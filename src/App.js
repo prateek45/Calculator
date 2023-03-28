@@ -33,6 +33,7 @@ const App = () => {
 
     if (removeSpaces(calc.num).length < 16) {
       setcalc({
+        ...calc,
         num:
           calc.num === 0 && value === "0"
             ? "0"
@@ -42,6 +43,7 @@ const App = () => {
         res: !calc.sign ? 0 : calc.res,
       });
     }
+    console.log(calc)
   };
 
 
@@ -59,7 +61,7 @@ const App = () => {
     console.log(value)
 
     setcalc({
-      
+      ...calc,
       sign: value,
       res: !calc.num ? calc.res : !calc.res ? calc.num : toLocaleString(
         math(
@@ -76,8 +78,12 @@ const App = () => {
 
   const equalsClickHandler = () => {
     console.log("Hi")
+    console.log(calc.sign && calc.num);
+    console.log(calc.sign)
+    console.log(calc.num)
     if (calc.sign && calc.num) {
       setcalc({
+        ...calc,
         res:
           calc.num === "0" && calc.sign === "/"
             ? "Can't divide with 0"
@@ -92,13 +98,14 @@ const App = () => {
         num: 0,
       });
     }
-    console.log(calc.sign && calc.num);
+    
   };
 
   // equalsClickHandler function
 
   const invertClickHandler = () => {
     setcalc({
+      ...calc,
       num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
       res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
       sign: "",
@@ -112,6 +119,7 @@ const App = () => {
     let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
 
     setcalc({
+      ...calc,
       num: (num /= Math.pow(100, 1)),
       res: (res /= Math.pow(100, 1)),
       sign: "",
@@ -123,6 +131,7 @@ const App = () => {
   const resetClickHandler = () => {
 
     setcalc({
+      ...calc,
       sign: "",
       num: 0,
       res: 0,
