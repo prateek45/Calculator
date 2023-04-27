@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Screen with particular value 1`] = `
+<div
+  className="ant-card ant-card-bordered css-dev-only-do-not-override-1vtf12y"
+  style={
+    Object {
+      "alignItems": "Center",
+      "backgroundColor": "#4357692d",
+      "marginBottom": "3%",
+      "textAlign": "Center",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="ant-card-body"
+    style={Object {}}
+  >
+    <div
+      className="screen"
+      style={
+        Object {
+          "fontSize": 70,
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "display": "block",
+            "whiteSpace": "nowrap",
+          }
+        }
+      >
+        53
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Screen with particular value_2 1`] = `
+<div
+  className="ant-card ant-card-bordered css-dev-only-do-not-override-1vtf12y"
+  style={
+    Object {
+      "alignItems": "Center",
+      "backgroundColor": "#4357692d",
+      "marginBottom": "3%",
+      "textAlign": "Center",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="ant-card-body"
+    style={Object {}}
+  >
+    <div
+      className="screen"
+      style={
+        Object {
+          "fontSize": 70,
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "display": "block",
+            "whiteSpace": "nowrap",
+          }
+        }
+      >
+        5
+      </div>
+    </div>
+  </div>
+</div>
+`;
